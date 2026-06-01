@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const $ = (selector) => document.querySelector(selector);
 
-const colors = [0x41f4ff, 0xff4fb8, 0xb7ff4a, 0xffd166, 0x8f5cff, 0xff7a59, 0x7ee7c8];
+const colors = [0x101010, 0xff4d3e, 0x245cff, 0x16a46b, 0xf4cf35, 0x8e55ff, 0x00a6a6];
 const state = {
   rows: [],
   numericColumns: [],
@@ -36,12 +36,16 @@ const els = {
   clusters: $("#clusterList"),
   report: $("#reportOutput"),
   copy: $("#copyReportButton"),
+  readoutStatus: $("#readoutStatus"),
+  details: $("#detailsToggle"),
+  back: $("#backButton"),
+  quickDemo: $("#quickDemoButton"),
   hover: $("#hoverCard"),
   toast: $("#toast")
 };
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x03040a, 0.035);
+scene.fog = new THREE.FogExp2(0xf7f6f1, 0.035);
 
 const camera = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 140);
 camera.position.set(9, 7, 12);
@@ -60,22 +64,24 @@ controls.maxDistance = 34;
 const root = new THREE.Group();
 scene.add(root);
 
-const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+const ambient = new THREE.AmbientLight(0xffffff, 1.45);
 scene.add(ambient);
 
-const keyLight = new THREE.PointLight(0x41f4ff, 26, 40);
-keyLight.position.set(-8, 8, 10);
+const keyLight = new THREE.PointLight(0xffffff, 52, 48);
+keyLight.position.set(-8, 10, 12);
 scene.add(keyLight);
 
-const roseLight = new THREE.PointLight(0xff4fb8, 18, 38);
-roseLight.position.set(9, -4, 8);
-scene.add(roseLight);
+const blueLight = new THREE.PointLight(0x245cff, 16, 36);
+blueLight.position.set(8, -3, 8);
+scene.add(blueLight);
 
-const grid = new THREE.GridHelper(18, 18, 0x335577, 0x172035);
+const grid = new THREE.GridHelper(18, 18, 0x101010, 0xb8b8b1);
 grid.position.y = -4.2;
+grid.material.transparent = true;
+grid.material.opacity = 0.28;
 root.add(grid);
 
-const axisMaterial = new THREE.LineBasicMaterial({ color: 0x6d7cff, transparent: true, opacity: 0.45 });
+const axisMaterial = new THREE.LineBasicMaterial({ color: 0x101010, transparent: true, opacity: 0.32 });
 const axisGeometry = new THREE.BufferGeometry().setFromPoints([
   new THREE.Vector3(-8, 0, 0),
   new THREE.Vector3(8, 0, 0),
@@ -90,6 +96,7 @@ let pointMesh;
 let centroidMesh;
 let haloMesh;
 let starField;
+let frameGroup;
 let hoveredIndex = -1;
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2(10, 10);
@@ -97,13 +104,31 @@ const matrix = new THREE.Matrix4();
 const dummy = new THREE.Object3D();
 const clock = new THREE.Clock();
 
-function createStars() {
+function createEnvironment() {
+  frameGroup = new THREE.Group();
+
+  for (let index = 0; index < 8; index += 1) {
+    const size = 7 + index * 1.28;
+    const edges = new THREE.EdgesGeometry(new THREE.BoxGeometry(size, size, size));
+    const material = new THREE.LineBasicMaterial({
+      color: index % 2 ? 0x101010 : 0x245cff,
+      transparent: true,
+      opacity: index % 2 ? 0.075 : 0.045
+    });
+    const frame = new THREE.LineSegments(edges, material);
+    frame.rotation.set(0.68 + index * 0.04, 0.2 + index * 0.09, -0.35 + index * 0.02);
+    frame.position.set(0, 0.45, -1.5);
+    frameGroup.add(frame);
+  }
+
+  scene.add(frameGroup);
+
   const geometry = new THREE.BufferGeometry();
   const positions = [];
   const starColors = [];
 
-  for (let index = 0; index < 700; index += 1) {
-    const radius = 22 + Math.random() * 40;
+  for (let index = 0; index < 520; index += 1) {
+    const radius = 20 + Math.random() * 36;
     const theta = Math.random() * Math.PI * 2;
     const phi = Math.acos(Math.random() * 2 - 1);
     positions.push(
@@ -111,13 +136,13 @@ function createStars() {
       Math.cos(phi) * radius,
       Math.sin(phi) * Math.sin(theta) * radius
     );
-    const color = new THREE.Color(colors[index % colors.length]);
+    const color = new THREE.Color(index % 5 === 0 ? colors[(index + 2) % colors.length] : 0x101010);
     starColors.push(color.r, color.g, color.b);
   }
 
   geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
   geometry.setAttribute("color", new THREE.Float32BufferAttribute(starColors, 3));
-  const material = new THREE.PointsMaterial({ size: 0.04, vertexColors: true, transparent: true, opacity: 0.62 });
+  const material = new THREE.PointsMaterial({ size: 0.035, vertexColors: true, transparent: true, opacity: 0.22 });
   starField = new THREE.Points(geometry, material);
   scene.add(starField);
 }
@@ -297,10 +322,10 @@ function updateScene() {
   const pointGeometry = new THREE.SphereGeometry(0.105, 16, 16);
   const pointMaterial = new THREE.MeshStandardMaterial({
     color: 0xffffff,
-    roughness: 0.28,
-    metalness: 0.18,
-    emissive: 0x111827,
-    emissiveIntensity: 0.28
+    roughness: 0.42,
+    metalness: 0.05,
+    emissive: 0x222222,
+    emissiveIntensity: 0.08
   });
 
   pointMesh = new THREE.InstancedMesh(pointGeometry, pointMaterial, state.points.length);
@@ -322,7 +347,13 @@ function updateScene() {
   root.add(pointMesh);
 
   const centroidGeometry = new THREE.OctahedronGeometry(0.34, 0);
-  const centroidMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.18, metalness: 0.5, emissive: 0x333333, emissiveIntensity: 0.4 });
+  const centroidMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    roughness: 0.28,
+    metalness: 0.12,
+    emissive: 0x111111,
+    emissiveIntensity: 0.12
+  });
   centroidMesh = new THREE.InstancedMesh(centroidGeometry, centroidMaterial, state.centroids.length);
 
   state.centroids.forEach((centroid, index) => {
@@ -352,7 +383,7 @@ function updateScene() {
 
   haloGeometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
   haloGeometry.setAttribute("color", new THREE.Float32BufferAttribute(haloColors, 3));
-  haloMesh = new THREE.LineSegments(haloGeometry, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.12 }));
+  haloMesh = new THREE.LineSegments(haloGeometry, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.2 }));
   root.add(haloMesh);
 }
 
@@ -362,6 +393,7 @@ function renderUi() {
   els.inertia.textContent = state.metrics.inertia.toFixed(1);
   els.separation.textContent = state.metrics.separation.toFixed(2);
   els.balance.textContent = `${Math.round(state.metrics.balance * 100)}%`;
+  els.readoutStatus.textContent = state.metrics.quality >= 74 ? "clean" : state.metrics.quality >= 52 ? "usable" : "rough";
 
   els.clusters.innerHTML = state.metrics.counts.map((count, index) => `
     <li>
@@ -397,8 +429,8 @@ function buildReport() {
     "",
     "## Reading",
     state.metrics.quality >= 74
-      ? "The selected variables produce visually separated and fairly readable groups."
-      : "The selected variables are usable, but the clusters may need different axes or another value of k.",
+      ? "The selected variables produce visually separated and readable groups."
+      : "The selected variables are usable, but the clusters may need different axes or another k value.",
     "",
     "## Suggested Next Steps",
     "- Try a neighboring k value and compare balance.",
@@ -413,7 +445,7 @@ function analyze() {
   const columns = numericColumns(rows);
 
   if (rows.length < 4 || columns.length < 3) {
-    toast("Necesito al menos 4 filas y 3 columnas numericas.");
+    toast("Need at least 4 rows and 3 numeric columns.");
     return;
   }
 
@@ -432,7 +464,7 @@ function analyze() {
   state.metrics = calculateMetrics(state.points, state.clusters, state.centroids);
   updateScene();
   renderUi();
-  toast("Analisis listo");
+  toast("Analysis ready");
 }
 
 function loadDemo() {
@@ -450,6 +482,15 @@ function resetCamera() {
   camera.position.set(9, 7, 12);
   controls.target.set(0, 0, 0);
   controls.update();
+}
+
+function openPanel(focusId) {
+  document.body.classList.add("panel-open");
+  if (focusId) window.setTimeout(() => document.getElementById(focusId)?.focus(), 360);
+}
+
+function closePanel() {
+  document.body.classList.remove("panel-open");
 }
 
 function updateHover(event) {
@@ -476,7 +517,7 @@ function readHover() {
     const point = state.points[hoveredIndex];
     const axes = [els.x.value, els.y.value, els.z.value];
     els.hover.innerHTML = `
-      <strong>Row ${point.id} · Cluster ${state.clusters[hoveredIndex] + 1}</strong>
+      <strong>Row ${point.id} - Cluster ${state.clusters[hoveredIndex] + 1}</strong>
       <span>${axes[0]}: ${point.raw[0]}</span>
       <span>${axes[1]}: ${point.raw[1]}</span>
       <span>${axes[2]}: ${point.raw[2]}</span>
@@ -491,6 +532,10 @@ function animate() {
 
   if (state.spinning) root.rotation.y += 0.0018;
   if (starField) starField.rotation.y -= 0.0008;
+  if (frameGroup) {
+    frameGroup.rotation.y = Math.sin(elapsed * 0.14) * 0.16;
+    frameGroup.rotation.z = Math.cos(elapsed * 0.12) * 0.08;
+  }
   if (pointMesh) {
     const pulse = 1 + Math.sin(elapsed * 2.2) * 0.035;
     pointMesh.scale.setScalar(pulse);
@@ -526,6 +571,10 @@ els.file.addEventListener("change", async () => {
 });
 
 els.demo.addEventListener("click", loadDemo);
+els.quickDemo.addEventListener("click", () => {
+  loadDemo();
+  toast("Demo refreshed");
+});
 els.analyze.addEventListener("click", analyze);
 els.resetCamera.addEventListener("click", resetCamera);
 els.k.addEventListener("input", () => {
@@ -535,15 +584,23 @@ els.k.addEventListener("input", () => {
 [els.x, els.y, els.z].forEach((select) => select.addEventListener("change", () => state.rows.length && analyze()));
 els.spin.addEventListener("click", () => {
   state.spinning = !state.spinning;
-  els.spin.textContent = state.spinning ? "orbit on" : "orbit off";
+  els.spin.textContent = state.spinning ? "motion on" : "motion off";
 });
 els.copy.addEventListener("click", async () => {
   await navigator.clipboard.writeText(state.report || els.report.textContent);
-  toast("Reporte copiado");
+  toast("Report copied");
+});
+els.details.addEventListener("click", () => openPanel());
+els.back.addEventListener("click", closePanel);
+document.querySelectorAll("[data-open-panel]").forEach((button) => {
+  button.addEventListener("click", () => openPanel(button.dataset.focus));
+});
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closePanel();
 });
 window.addEventListener("pointermove", updateHover);
 window.addEventListener("resize", resize);
 
-createStars();
+createEnvironment();
 loadDemo();
 animate();

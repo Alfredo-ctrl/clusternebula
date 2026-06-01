@@ -1,64 +1,109 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ClusterNebula - 3D Data Science Lab</title>
+    <title>ClusterNebula - 3D Data Clustering Studio</title>
+    <meta
+      name="description"
+      content="A full-screen 3D lab for exploring CSV datasets with local k-means clustering."
+    />
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <canvas id="scene"></canvas>
+    <canvas id="scene" aria-label="Interactive 3D cluster field"></canvas>
+    <div class="grain" aria-hidden="true"></div>
 
-    <header class="topbar">
-      <a class="brand" href="#lab">clusternebula</a>
-      <nav aria-label="Sections">
-        <a href="#data">Data</a>
-        <a href="#insights">Insights</a>
-        <a href="#report">Report</a>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="ClusterNebula top">
+        <span>clusternebula</span>
+      </a>
+      <nav aria-label="Workspace navigation">
+        <a href="#top">top</a>
+        <button class="nav-button" type="button" data-open-panel data-focus="csvInput">data</button>
+        <button class="nav-button" type="button" data-open-panel data-focus="clusterCount">model</button>
+        <button class="nav-button" type="button" data-open-panel data-focus="copyReportButton">report</button>
       </nav>
-      <button class="icon-button" id="spinToggle" type="button">orbit on</button>
+      <button class="settings-button" id="spinToggle" type="button">motion on</button>
     </header>
 
-    <main id="lab" class="shell">
-      <section class="hero-copy">
-        <p class="eyebrow">3D data science lab</p>
-        <h1>Explora clusters como si fueran una nebulosa.</h1>
+    <main id="top" class="stage">
+      <section class="hero-copy" aria-labelledby="heroTitle">
+        <p class="kicker">local k-means / csv / three.js</p>
+        <h1 id="heroTitle">CSV clustering in a living 3D field.</h1>
         <p>
-          Carga un CSV, elige variables numericas, corre k-means localmente y navega los patrones en una escena 3D interactiva.
+          Paste a dataset, pick three numeric axes, and watch the browser group patterns into clusters without sending data anywhere.
         </p>
+        <div class="hero-actions" aria-label="Primary actions">
+          <button class="text-action" id="detailsToggle" type="button">more details</button>
+          <button class="text-action alt" id="quickDemoButton" type="button">run demo</button>
+        </div>
       </section>
 
-      <section id="data" class="control-panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">dataset</p>
-            <h2>Entrada</h2>
-          </div>
+      <section class="live-readout" aria-label="Current clustering status">
+        <div>
+          <span>rows</span>
           <output id="rowCount">0 rows</output>
+        </div>
+        <div>
+          <span>quality</span>
+          <output id="qualityScore">0%</output>
+        </div>
+        <div>
+          <span>inertia</span>
+          <strong id="inertiaValue">0</strong>
+        </div>
+        <div>
+          <span>separation</span>
+          <strong id="separationValue">0</strong>
+        </div>
+      </section>
+    </main>
+
+    <aside class="workbench" id="workbench" aria-label="ClusterNebula controls">
+      <div class="workbench-top">
+        <div>
+          <p class="kicker">analysis console</p>
+          <h2>Shape the model.</h2>
+        </div>
+        <button class="back-button" id="backButton" type="button">back</button>
+      </div>
+
+      <section class="tool-section" id="data">
+        <div class="section-heading">
+          <span>01</span>
+          <h3>Dataset</h3>
         </div>
 
         <label class="file-drop" for="fileInput">
           <input id="fileInput" type="file" accept=".csv,text/csv" />
-          <span>Cargar CSV</span>
-          <small>o usa el dataset demo</small>
+          <span>Load CSV</span>
+          <small>or paste one below</small>
         </label>
 
         <label class="field">
-          <span>CSV rapido</span>
-          <textarea id="csvInput" rows="6" spellcheck="false"></textarea>
+          <span>Quick CSV</span>
+          <textarea id="csvInput" rows="7" spellcheck="false"></textarea>
         </label>
+      </section>
+
+      <section class="tool-section" id="model">
+        <div class="section-heading">
+          <span>02</span>
+          <h3>Model</h3>
+        </div>
 
         <div class="axis-grid">
           <label class="field">
-            <span>X</span>
+            <span>X axis</span>
             <select id="xAxis"></select>
           </label>
           <label class="field">
-            <span>Y</span>
+            <span>Y axis</span>
             <select id="yAxis"></select>
           </label>
           <label class="field">
-            <span>Z</span>
+            <span>Z axis</span>
             <select id="zAxis"></select>
           </label>
         </div>
@@ -69,50 +114,41 @@
         </label>
 
         <div class="action-row">
-          <button class="primary-action" id="analyzeButton" type="button">Analizar</button>
-          <button class="secondary-action" id="demoButton" type="button">Demo</button>
-          <button class="secondary-action" id="resetCameraButton" type="button">Centrar</button>
+          <button class="solid-action" id="analyzeButton" type="button">Analyze</button>
+          <button class="outline-action" id="demoButton" type="button">Demo</button>
+          <button class="outline-action" id="resetCameraButton" type="button">Center</button>
         </div>
       </section>
 
-      <section id="insights" class="insight-panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">model readout</p>
-            <h2>Lectura</h2>
-          </div>
-          <output id="qualityScore">0%</output>
+      <section class="tool-section" id="insights">
+        <div class="section-heading">
+          <span>03</span>
+          <h3>Cluster readout</h3>
         </div>
 
-        <div class="metric-grid">
+        <div class="metric-row">
           <div>
-            <span>Inertia</span>
-            <strong id="inertiaValue">0</strong>
+            <span>balance</span>
+            <strong id="balanceValue">0%</strong>
           </div>
           <div>
-            <span>Separation</span>
-            <strong id="separationValue">0</strong>
-          </div>
-          <div>
-            <span>Balance</span>
-            <strong id="balanceValue">0</strong>
+            <span>status</span>
+            <strong id="readoutStatus">waiting</strong>
           </div>
         </div>
 
         <ul id="clusterList" class="cluster-list"></ul>
       </section>
 
-      <section id="report" class="report-panel">
-        <div class="panel-heading">
-          <div>
-            <p class="eyebrow">export</p>
-            <h2>Reporte</h2>
-          </div>
-          <button class="secondary-action compact" id="copyReportButton" type="button">Copiar</button>
+      <section class="tool-section" id="report">
+        <div class="section-heading">
+          <span>04</span>
+          <h3>Report</h3>
         </div>
-        <pre id="reportOutput">Carga datos o corre el demo para generar un reporte.</pre>
+        <button class="outline-action copy-action" id="copyReportButton" type="button">Copy markdown</button>
+        <pre id="reportOutput">Run the demo or analyze your own CSV to generate a report.</pre>
       </section>
-    </main>
+    </aside>
 
     <div id="hoverCard" class="hover-card" hidden></div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
