@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClusterNebula - 3D Data Science Lab</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <header class="topbar">
+      <a class="brand" href="#lab">clusternebula</a>
+      <nav aria-label="Sections">
+        <a href="#data">Data</a>
+        <a href="#insights">Insights</a>
+        <a href="#report">Report</a>
+      </nav>
+      <button class="icon-button" id="spinToggle" type="button">orbit on</button>
+    </header>
+
+    <main id="lab" class="shell">
+      <section class="hero-copy">
+        <p class="eyebrow">3D data science lab</p>
+        <h1>Explora clusters como si fueran una nebulosa.</h1>
+        <p>
+          Carga un CSV, elige variables numericas, corre k-means localmente y navega los patrones en una escena 3D interactiva.
+        </p>
+      </section>
+
+      <section id="data" class="control-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">dataset</p>
+            <h2>Entrada</h2>
+          </div>
+          <output id="rowCount">0 rows</output>
+        </div>
+
+        <label class="file-drop" for="fileInput">
+          <input id="fileInput" type="file" accept=".csv,text/csv" />
+          <span>Cargar CSV</span>
+          <small>o usa el dataset demo</small>
+        </label>
+
+        <label class="field">
+          <span>CSV rapido</span>
+          <textarea id="csvInput" rows="6" spellcheck="false"></textarea>
+        </label>
+
+        <div class="axis-grid">
+          <label class="field">
+            <span>X</span>
+            <select id="xAxis"></select>
+          </label>
+          <label class="field">
+            <span>Y</span>
+            <select id="yAxis"></select>
+          </label>
+          <label class="field">
+            <span>Z</span>
+            <select id="zAxis"></select>
+          </label>
+        </div>
+
+        <label class="field range-field">
+          <span>Clusters <b id="kValue">4</b></span>
+          <input id="clusterCount" type="range" min="2" max="7" value="4" />
+        </label>
+
+        <div class="action-row">
+          <button class="primary-action" id="analyzeButton" type="button">Analizar</button>
+          <button class="secondary-action" id="demoButton" type="button">Demo</button>
+          <button class="secondary-action" id="resetCameraButton" type="button">Centrar</button>
+        </div>
+      </section>
+
+      <section id="insights" class="insight-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">model readout</p>
+            <h2>Lectura</h2>
+          </div>
+          <output id="qualityScore">0%</output>
+        </div>
+
+        <div class="metric-grid">
+          <div>
+            <span>Inertia</span>
+            <strong id="inertiaValue">0</strong>
+          </div>
+          <div>
+            <span>Separation</span>
+            <strong id="separationValue">0</strong>
+          </div>
+          <div>
+            <span>Balance</span>
+            <strong id="balanceValue">0</strong>
+          </div>
+        </div>
+
+        <ul id="clusterList" class="cluster-list"></ul>
+      </section>
+
+      <section id="report" class="report-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">export</p>
+            <h2>Reporte</h2>
+          </div>
+          <button class="secondary-action compact" id="copyReportButton" type="button">Copiar</button>
+        </div>
+        <pre id="reportOutput">Carga datos o corre el demo para generar un reporte.</pre>
+      </section>
+    </main>
+
+    <div id="hoverCard" class="hover-card" hidden></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

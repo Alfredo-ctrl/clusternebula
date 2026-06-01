@@ -1,0 +1,24 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ClusterNebula banner">
+  <rect width="1200" height="360" rx="34" fill="#03040a"/>
+  <circle cx="860" cy="174" r="138" fill="#41f4ff" opacity=".16"/>
+  <circle cx="980" cy="112" r="96" fill="#ff4fb8" opacity=".18"/>
+  <circle cx="940" cy="250" r="74" fill="#b7ff4a" opacity=".16"/>
+  <path d="M0 286 C180 156 290 382 490 230 C690 78 820 348 1200 118" stroke="#41f4ff" stroke-width="3" opacity=".35"/>
+  <path d="M0 80 H1200 M0 160 H1200 M0 240 H1200 M180 0 V360 M360 0 V360 M540 0 V360 M720 0 V360 M900 0 V360 M1080 0 V360" stroke="#ffffff" opacity=".06"/>
+  <text x="70" y="118" fill="#41f4ff" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="800" letter-spacing="4">3D DATA SCIENCE LAB</text>
+  <text x="70" y="190" fill="#f8fbff" font-family="Segoe UI, Arial, sans-serif" font-size="66" font-weight="900">ClusterNebula</text>
+  <foreignObject x="72" y="212" width="590" height="82">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="color:#aab6c8;font:700 25px Segoe UI, Arial, sans-serif;line-height:1.25">Explore CSV datasets as interactive 3D cluster clouds powered by local k-means analysis.</div>
+  </foreignObject>
+  <g transform="translate(720 62)">
+    <circle cx="74" cy="76" r="12" fill="#41f4ff"/>
+    <circle cx="180" cy="42" r="9" fill="#ff4fb8"/>
+    <circle cx="294" cy="96" r="15" fill="#b7ff4a"/>
+    <circle cx="126" cy="188" r="10" fill="#ffd166"/>
+    <circle cx="254" cy="214" r="13" fill="#8f5cff"/>
+    <path d="M74 76 L180 42 L294 96 L254 214 L126 188 L74 76" stroke="#f8fbff" stroke-width="4" opacity=".38"/>
+    <path d="M74 76 L294 96 M180 42 L254 214 M126 188 L294 96" stroke="#41f4ff" stroke-width="2" opacity=".45"/>
+    <circle cx="180" cy="142" r="100" fill="none" stroke="#f8fbff" stroke-width="2" opacity=".16"/>
+    <circle cx="180" cy="142" r="148" fill="none" stroke="#41f4ff" stroke-width="2" opacity=".12"/>
+  </g>
+</svg>

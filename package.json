@@ -1,0 +1,17 @@
+{
+  "name": "clusternebula",
+  "version": "1.0.0",
+  "description": "A 3D browser lab for exploring CSV datasets with k-means clustering.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "check": "node --check src/app.js"
+  },
+  "dependencies": {
+    "three": "^0.184.0",
+    "vite": "^8.0.14"
+  }
+}
