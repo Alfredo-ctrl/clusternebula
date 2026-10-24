@@ -1,35 +1,46 @@
-<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ClusterNebula banner">
-  <rect width="1200" height="360" fill="#F7F6F1"/>
-  <path d="M0 0H1200V360H0V0Z" fill="url(#grid)" opacity=".42"/>
-  <circle cx="180" cy="245" r="112" stroke="#101010" stroke-width="28" opacity=".05"/>
-  <circle cx="1006" cy="96" r="92" stroke="#101010" stroke-width="22" opacity=".05"/>
-  <g transform="translate(664 -32) rotate(-12 240 210)" opacity=".62">
-    <rect x="58" y="36" width="430" height="286" fill="url(#hatch)" stroke="#101010" stroke-width="2"/>
-    <rect x="160" y="102" width="226" height="142" fill="#F7F6F1" stroke="#101010" stroke-width="2" opacity=".82"/>
-    <path d="M160 102L58 36M386 102L488 36M160 244L58 322M386 244L488 322" stroke="#101010" stroke-width="2" opacity=".55"/>
-  </g>
-  <text x="72" y="92" fill="#101010" font-family="Trebuchet MS, Verdana, sans-serif" font-size="22" font-weight="900" letter-spacing="7">LOCAL K-MEANS / CSV / THREE.JS</text>
-  <text x="72" y="174" fill="#101010" font-family="Trebuchet MS, Verdana, sans-serif" font-size="72" font-weight="900" letter-spacing="4">clusternebula</text>
-  <rect x="72" y="196" width="344" height="14" fill="url(#bars)"/>
-  <text x="72" y="270" fill="#101010" font-family="Trebuchet MS, Verdana, sans-serif" font-size="28" font-weight="800">A full-screen 3D clustering studio for CSV data.</text>
-  <g transform="translate(760 224)">
-    <circle cx="0" cy="0" r="12" fill="#101010"/>
-    <circle cx="74" cy="-30" r="12" fill="#FF4D3E"/>
-    <circle cx="140" cy="18" r="12" fill="#245CFF"/>
-    <circle cx="218" cy="-18" r="12" fill="#16A46B"/>
-    <circle cx="286" cy="24" r="12" fill="#F4CF35" stroke="#101010" stroke-width="3"/>
-    <path d="M0 0L74 -30L140 18L218 -18L286 24M74 -30L218 -18M0 0L140 18" stroke="#101010" stroke-width="5" stroke-linecap="round" opacity=".64"/>
-  </g>
+<svg width="1280" height="320" viewBox="0 0 1280 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ClusterNebula 3D Data Lab Architectural Banner">
   <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1280" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#05080F"/>
+      <stop offset="100%" stop-color="#0B1120"/>
+    </linearGradient>
     <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
-      <path d="M32 0H0V32" stroke="#101010" stroke-opacity=".12"/>
-    </pattern>
-    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(38)">
-      <rect width="6" height="6" fill="#F7F6F1"/>
-      <path d="M0 0V6" stroke="#101010" stroke-opacity=".35" stroke-width="2"/>
-    </pattern>
-    <pattern id="bars" width="32" height="14" patternUnits="userSpaceOnUse">
-      <rect width="18" height="14" fill="#101010"/>
+      <path d="M 32 0 L 0 0 0 32" stroke="#1E293B" stroke-opacity="0.4" stroke-width="1"/>
     </pattern>
   </defs>
+
+  <rect width="1280" height="320" rx="10" fill="url(#bg)"/>
+  <rect width="1280" height="320" rx="10" fill="url(#grid)"/>
+  <rect x="1" y="1" width="1278" height="318" rx="9" stroke="#1E293B" stroke-width="2"/>
+
+  <!-- Top Telemetry Bar -->
+  <line x1="0" y1="44" x2="1280" y2="44" stroke="#1E293B" stroke-width="1.5"/>
+  <text x="44" y="28" font-family="'JetBrains Mono', Consolas, monospace" font-size="11" font-weight="600" fill="#64748B" letter-spacing="1.5">SYS.ID // CLUSTERNEBULA</text>
+  <text x="1236" y="28" text-anchor="end" font-family="'JetBrains Mono', Consolas, monospace" font-size="11" font-weight="600" fill="#38BDF8" letter-spacing="1.5">DOMAIN // UNSUPERVISED LEARNING & 3D SPATIAL VISUALIZATION</text>
+
+  <!-- Title & Subtitle -->
+  <g transform="translate(44, 84)">
+    <text x="0" y="0" font-family="'JetBrains Mono', Consolas, monospace" font-size="12" font-weight="700" fill="#38BDF8" letter-spacing="2">THREE.JS // WEBGL // K-MEANS CLUSTERING // CSV PARSER</text>
+    <text x="0" y="46" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="38" font-weight="800" fill="#F8FAFC" letter-spacing="-0.8">ClusterNebula 3D Data Lab</text>
+    <text x="0" y="80" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="15" font-weight="400" fill="#94A3B8">Interactive 3D data science environment rendering multidimensional K-Means clustering partitions in WebGL.</text>
+
+    <!-- 4 Metric Boxes -->
+    <g transform="translate(0, 112)">
+      <rect x="0" y="0" width="280" height="68" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="1.2"/>
+      <text x="18" y="25" font-family="'JetBrains Mono', Consolas, monospace" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1">ALGORITHM</text>
+      <text x="18" y="50" font-family="'JetBrains Mono', Consolas, monospace" font-size="19" font-weight="800" fill="#38BDF8">K-Means Centroids</text>
+
+      <rect x="300" y="0" width="280" height="68" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="1.2"/>
+      <text x="318" y="25" font-family="'JetBrains Mono', Consolas, monospace" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1">RENDERER</text>
+      <text x="318" y="50" font-family="'JetBrains Mono', Consolas, monospace" font-size="19" font-weight="800" fill="#818CF8">Three.js WebGL</text>
+
+      <rect x="600" y="0" width="280" height="68" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="1.2"/>
+      <text x="618" y="25" font-family="'JetBrains Mono', Consolas, monospace" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1">INGESTION</text>
+      <text x="618" y="50" font-family="'JetBrains Mono', Consolas, monospace" font-size="19" font-weight="800" fill="#10B981">Client-Side CSV</text>
+
+      <rect x="900" y="0" width="292" height="68" rx="6" fill="#0F172A" stroke="#1E293B" stroke-width="1.2"/>
+      <text x="918" y="25" font-family="'JetBrains Mono', Consolas, monospace" font-size="10" font-weight="600" fill="#64748B" letter-spacing="1">DIMENSIONS</text>
+      <text x="918" y="50" font-family="'JetBrains Mono', Consolas, monospace" font-size="19" font-weight="800" fill="#F8FAFC">3D Spatial</text>
+    </g>
+  </g>
 </svg>
