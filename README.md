@@ -1,6 +1,15 @@
 <p align="center">
-  <img src="assets/readme-hero.svg" alt="ClusterNebula banner" width="100%" />
+  <img src="assets/readme-hero.svg" alt="ClusterNebula 3D Data Lab Architectural Banner" width="100%" />
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/ALGORITHM-K-MEANS%20CLUSTERING-0F172A?style=flat-square&labelColor=05080F&color=0284C7" alt="ALGORITHM: K-MEANS CLUSTERING" />
+  <img src="https://img.shields.io/badge/ENGINE-THREE.JS%20WEBGL-0F172A?style=flat-square&labelColor=05080F&color=1E293B" alt="ENGINE: THREE.JS WEBGL" />
+  <img src="https://img.shields.io/badge/INPUT-DYNAMIC%20CSV-0F172A?style=flat-square&labelColor=05080F&color=1E293B" alt="INPUT: DYNAMIC CSV" />
+  <img src="https://img.shields.io/badge/PROJECTION-3D%20SPATIAL%20CLOUD-0F172A?style=flat-square&labelColor=05080F&color=1E293B" alt="PROJECTION: 3D SPATIAL CLOUD" />
+</p>
+
+---
 
 <h1 align="center">ClusterNebula</h1>
 
